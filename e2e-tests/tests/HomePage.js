@@ -2,7 +2,7 @@
 
 describe('HomePage', function(){
 
-  var ptor =  protractor.getInstance();
+  var ptor =  browser;
   var mockModule = require('../mocked-backend.js');
   var headerMenuTitle = 'Система Пластових електронних опитників';
   var HeaderMenu = [
@@ -19,7 +19,7 @@ describe('HomePage', function(){
   var parCategories = [
       {catName: 'Спорт', testcount: 'Тестів: 8', subcatQuantity: 3, url: '/parentcat-page/1'},
       {catName: "Комп'ютери", testcount: 'Тестів: 4', subcatQuantity: 3, url: '/parentcat-page/3'},
-      {catName: 'Туризм', testcount: 'Тестів: 1', subcatQuantity: 3, url: 'parentcat-page/4'}
+      {catName: 'Туризм', testcount: 'Тестів: 1', subcatQuantity: 3, url: '/parentcat-page/4'}
       ];
   var subCategories = [
       [
@@ -40,6 +40,7 @@ describe('HomePage', function(){
       ];
 
   var parCategoriesQuantity = 3;
+  var baseUrl = 'http://localhost:8000/#/';
 
 
   beforeEach(function () {
@@ -71,7 +72,7 @@ describe('HomePage', function(){
 
   describe('HeaderMenu', function () {
     
-    browser.get('http://localhost:8000/#/');
+    browser.get(baseUrl);
     
     var headerTitle = element(by.css('.page-header h4')).getText();
 
@@ -89,7 +90,7 @@ describe('HomePage', function(){
     
 
     beforeEach(function () {
-      browser.get('http://localhost:8000/#/');
+      browser.get(baseUrl);
     });
 
     it('should redirect on each menuitem to corresponding linc', function () {
@@ -98,7 +99,7 @@ describe('HomePage', function(){
  });
   describe('Footer', function () {
 
-    browser.get('http://localhost:8000/#/');
+    browser.get(baseUrl);
 
     it('All menu items should be and corectly named', function () {
       checkMenuItems(FooterMenu);
@@ -107,7 +108,7 @@ describe('HomePage', function(){
 
   describe('FooterClick', function () {
     beforeEach(function () {
-      browser.get('http://localhost:8000/#/');
+      browser.get(baseUrl);
     });
 
     it('should redirect on each menuitem to corresponding linc', function() {
@@ -159,7 +160,7 @@ describe('HomePage', function(){
       }
     }
     beforeEach(function () {
-      browser.get('http://localhost:8000/#/');
+      browser.get(baseUrl);
       ptor.addMockModule('httpBackendMock', mockModule.httpBackendMock); 
     });
   
@@ -186,14 +187,14 @@ describe('HomePage', function(){
       
 
     function parCatItems(elemNumber) {
-      var parCatContainer = element.all(by.css('.rectangle'));
+      var parCatContainer = element.all(by.binding('parCat.title'));
       var curentElem = parCatContainer.get(elemNumber);
         return curentElem;
     };
 
     function checkParCatClickLinkLoaction() {
       for(var i = 0; i < parCategoriesQuantity; i++) {
-        browser.get('http://localhost:8000/#/');
+        browser.get(baseUrl);
         parCatItems(i).click();
         expect(browser.getLocationAbsUrl()).toMatch(parCategories[i].url);
       }
@@ -201,14 +202,14 @@ describe('HomePage', function(){
     function checkSubCatClickLinkLocation(){
       for(var i = 0; i < parCategoriesQuantity;i++) {
         for(var j = 0; j < parCategories[i].subcatQuantity; j++){
-          browser.get('http://localhost:8000/#/');
+          browser.get(baseUrl);
           element.all(by.css('.categories-container')).get(i).all(by.binding('subCat.title')).get(j).click(); 
           expect(browser.getLocationAbsUrl()).toMatch(subCategories[i][j].url);
         }
       }
     }
     beforeEach(function () {
-        browser.get('http://localhost:8000/#/');
+        browser.get(baseUrl);
         ptor.addMockModule('httpBackendMock', mockModule.httpBackendMock); 
     });
     it('click ParCats should redirect to corresponding link', function () {

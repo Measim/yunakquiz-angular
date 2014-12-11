@@ -15,15 +15,16 @@ describe('AdminPanel', function () {
     ]
     var tabsCount = 7;
       ptor.addMockModule('httpBackendMock', mockModule.httpBackendMock);
-      var adminPanelTabs = element.all(by.css('.admin-panel-tabs li'));
+      var adminPanelTabs = element.all(by.binding('curentTab.caption'));
+      var baseUrl = 'http://localhost:8000/#/administration-panel/';
 
     beforeEach(function () {
         ptor.addMockModule('httpBackendMock', mockModule.httpBackendMock);
-        browser.get('http://localhost:8000/#/administration-panel/'); 
+        browser.get(baseUrl); 
     });
 
     describe('AdminPanelTabElements', function () {
-      browser.get('http://localhost:8000/#/administration-panel/'); 
+      browser.get(baseUrl); 
       var adminTitleElement = element(by.css('.pageTitle')).getText();
 
       function adminPanTabNameCheck(){
@@ -49,7 +50,7 @@ describe('AdminPanel', function () {
         });
       }
       beforeEach(function () {
-        browser.get('http://localhost:8000/#/administration-panel/');
+        browser.get(baseUrl);
       });
 
       it('should be six Tabs', function () {
